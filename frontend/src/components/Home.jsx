@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import {useNavigate} from 'react-router-dom';
 import {
   Button,
   Card,
@@ -13,6 +14,8 @@ import axios from "axios";
 
 const Home = () => {
   const [data, setData] = useState([]);
+  var navigate = useNavigate();
+
 
   useEffect(() => {
     axios
@@ -24,7 +27,23 @@ const Home = () => {
       .catch((err) => console.log(err));
   }, []);
 
-
+  const delvalue=(id)=>{
+    console.log(id);
+    axios.delete("http://localhost:3001/remove/"+id)
+    .then((res)=>{
+      alert(res.data.message);
+      window.location.reload();
+      refresh();
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
+  
+  const updatevalue=(val)=>{
+    console.log("update clicked",val);
+    navigate("/add", { state: {val}});
+  }
 
 
   return (
@@ -51,10 +70,10 @@ const Home = () => {
                 <Typography component="div">{val.empId}</Typography>
               </CardContent>
               <CardActions sx={{ justifyContent: "center" }}>
-                <Button size="small" variant="contained" color="secondary">
+                <Button onClick={()=>{delvalue((val._id))}} size="small" variant="contained" color="secondary">
                   Delete
                 </Button>
-                <Button  size="small" variant="contained" color="secondary">
+                <Button onClick={()=>{updatevalue((val))}}  size="small" variant="contained" color="secondary">
                   Update
                 </Button>
               </CardActions>

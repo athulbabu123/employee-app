@@ -29,29 +29,29 @@ app.get('/get',async(req,res)=>{
   }
 })
 
-// //api to delete employee
-// app.delete('/remove/:a',async(req,res)=>{
-//   console.log(req.params.a);
-//   try {
-//       var id = req.params.a;
-//       var data = await empModel.findByIdAndDelete(id);
-//       res.send({message : "data deleted succesfully"})
-//   } catch (error) {
-//       console.log(error);
-//   }
-// })
+//api to delete employee
+app.delete('/remove/:a',async(req,res)=>{
+  console.log(req.params.a);
+  try {
+      var id = req.params.a;
+      var data = await BlogModel.findByIdAndDelete(id);
+      res.send({message : "data deleted succesfully"})
+  } catch (error) {
+      console.log(error);
+  }
+})
 
-// //api to update employee
-// app.put('/update/:a',async(req,res)=>{
-//   console.log(req.params.a);
-//   try {
-//       var id = req.params.a;
-//       var data = await empModel.findByIdAndUpdate(id,req.body);
-//       res.send({message : "data updated succesfully!!",data})
-//   } catch (error) {
-//       console.log(error);
-//   }
-// })
+//api to update employee
+app.put('/update/:a',async(req,res)=>{
+  console.log(req.params.a);
+  try {
+      var id = req.params.a;
+      var data = await BlogModel.findByIdAndUpdate(id,req.body);
+      res.send({message : "data updated succesfully!!",data})
+  } catch (error) {
+      console.log(error);
+  }
+})
 
 
 app.listen(PORT, () => {

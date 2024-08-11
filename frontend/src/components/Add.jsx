@@ -1,9 +1,10 @@
 import { Box, Button, TextField } from "@mui/material";
-import  { useState } from "react";
+import  { useEffect, useState } from "react";
 import axios from "axios";
-import {  useNavigate } from "react-router-dom";
+import {  useLocation, useNavigate } from "react-router-dom";
 
 const Add = () => {
+  const location = useLocation();
   const navigate = useNavigate();
   var [inputs, setInputs] = useState({
     EmpName: "",
@@ -16,19 +17,50 @@ const Add = () => {
     setInputs({ ...inputs, [e.target.name]: e.target.value });
     console.log("in",inputs);
   };
+
+  useEffect(() => {
+    if (location.state && location.state.val) {
+      setInputs(location.state.val); // Populate form with existing data
+    }
+  }, [location.state]);
+
   const addData = () => {
     //Write missing code here
     
     
-  axios.post("http://localhost:3001/add",inputs)
-  .then((res)=>{
-    console.log(res);
-    alert(res.data.message);
-    navigate("/");
-  })
-  .catch((err)=>{
-    console.log(err);
-  })
+  // axios.post("http://localhost:3001/add",inputs)
+  // .then((res)=>{
+  //   console.log(res);
+  //   alert(res.data.message);
+  //   navigate("/");
+  // })
+  // .catch((err)=>{
+  //   console.log(err);
+  // })
+  
+
+  if (location.state!==null) {
+    axios.put("http://localhost:3001/update/"+location.state.val._id,inputs)
+    .then((res)=>{
+      console.log(res);
+      alert(res.data.message);
+      navigate("/");
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+  }
+  else{
+    axios.post("http://localhost:3001/add",inputs)
+.then((res)=>{
+  console.log(res);
+  alert(res.data.message);
+  navigate("/");
+})
+.catch((err)=>{
+  console.log(err);
+})
+  }
   
   };
   return (
@@ -57,7 +89,8 @@ const Add = () => {
               placeholder="Employee Name"
               onChange={inputHandler}
               name="EmpName"
-              value={inputs.title}
+              // value={inputs.title}
+              value={inputs.EmpName}
               fullWidth
             />
             <TextField
@@ -66,7 +99,8 @@ const Add = () => {
               onChange={inputHandler}
               name="designation"
               value={inputs.designation}
-              multiline={4}
+              // multiline={4}
+              multiline={true}
             />
              <TextField
               variant="outlined"
